@@ -1,7 +1,7 @@
 
 from apps.endpoints.models import Endpoint
 from apps.endpoints.models import MLAlgorithm
-from apps.endpoints .models import MLAlgorithmStatus
+from apps.endpoints.models import MLAlgorithmStatus
 
 class MLRegistry:
     

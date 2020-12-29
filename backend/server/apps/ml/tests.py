@@ -40,7 +40,7 @@ class MLTests(TestCase):
         algorithm_name = "random forest"
         algorithm_status = "production"
         algorithm_version = "0.0.1"
-        algorithm_owner = "Piotr"
+        algorithm_owner = "Manish"
         algorithm_description = "Random Forest with simple pre- and post-processing"
         algorithm_code = inspect.getsource(RandomForestClassifier)
         

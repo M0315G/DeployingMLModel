@@ -9,7 +9,7 @@ from apps.endpoints.models import MLRequest
 
 
 class EndpointSerializer(serializers.ModelSerializer):
-    class Mets:
+    class Meta:
         model = Endpoint
         read_only_field = ("id", "name", "owner", "created_at")
         fields = read_only_field
