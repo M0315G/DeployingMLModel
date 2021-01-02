@@ -1,4 +1,3 @@
-
 from apps.endpoints.models import Endpoint
 from apps.endpoints.models import MLAlgorithm
 from apps.endpoints.models import MLAlgorithmStatus
@@ -30,4 +29,3 @@ class MLRegistry:
 
         # add to registry
         self.endpoints[database_object.id] = algorithm_object
-        
