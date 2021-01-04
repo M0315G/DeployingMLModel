@@ -64,4 +64,5 @@ Alternatively see the GitHub documentation on
 ## Show your support
 
 Please ⭐️ this repository if this project helped you!
+
 ---
