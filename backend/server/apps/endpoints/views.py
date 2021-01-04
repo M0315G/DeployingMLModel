@@ -1,5 +1,15 @@
-from rest_framework import viewsets
+import json
+from numpy.random import rand
+from server.wsgi import registry
+from django.db import transaction
 from rest_framework import mixins
+from rest_framework import viewsets
+from rest_framework import views, status
+from rest_framework.response import Response
+from apps.ml.registry import MLRegistry
+
+from apps.endpoints.models import ABTest
+from apps.endpoints.serializers import ABTestSerializer
 
 from apps.endpoints.models import Endpoint
 from apps.endpoints.serializers import EndpointSerializer
@@ -13,12 +23,7 @@ from apps.endpoints.serializers import MLAlgorithmStatusSerializer
 from apps.endpoints.models import MLRequest
 from apps.endpoints.serializers import MLRequestSerializer
 
-import json
-from numpy.random import rand
-from rest_framework import views, status
-from rest_framework.response import Response
-from apps.ml.registry import MLRegistry
-from server.wsgi import registry
+
 
 class EndpointViewSet(
     mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
@@ -113,3 +118,36 @@ class PredictView(views.APIView):
         prediction["request_id"] = ml_request.id
 
         return Response(prediction)
+    
+class ABTestViewSet(
+    mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet,
+    mixins.CreateModelMixin, mixins.UpdateModelMixin
+):
+    serializer_class = ABTestSerializer
+    queryset = ABTest.objects.all()
+    
+    def perform_create(self, serializer):
+        try:
+            with transaction.atomic():
+                instance = serializer.save()
+                
+                # update status for first algorithm
+                status_1 = MLAlgorithmStatus(status = "ab_testing",
+                                             created_by = instace.created_by,
+                                             parent_mlalgorithm = instace.parent_mlalgorithm_1,
+                                             active=True)
+                
+                status_1.save()
+                
+                # update status for second algorithm
+                status_2 = MLAlgorithmStatus(status = "ab_testing",
+                                             created_by = instace.created_by,
+                                             parent_mlalgorithm = instace.parent_mlalgorithm_2,
+                                             active=True)
+                
+                status_2.save()
+                
+                deactivate_other_statuses(status_2)
+                
+        except Exception as e:
+            raise APIException(str(e))
