@@ -25,7 +25,7 @@ SECRET_KEY = '%hz%40in*-!bs5qdj2lieqc2us!j8h-%cjw#(q+m32)8%sz!qp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://m0315g.github.io/DeployingMLModel/']
 
 
 # Application definition
